@@ -153,8 +153,7 @@ class CheckJobHandler(AbstractHandler):
             task_id = record["task_id"]
             if task_id is not None:
                 # revoke existing Celery task with the previously scheduled job
-                current_app.extensions["celery"].control.revoke(task_id,
-                   terminate=True, signal='SIGKILL')
+                current_app.extensions["celery"].control.revoke(task_id, terminate=True)
             mongo_config_collection.update_one({"_id": record["_id"]},
                                                {"$set": {"previous_job_start_time": datetime.datetime.utcnow(),
                                                          "currently_scheduled": False,
